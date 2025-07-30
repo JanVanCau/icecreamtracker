@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ice Cream Tracker</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkljZSBDcmVhbSBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJJY2VDcmVhbSIsCiAgImRlc2NyaXB0aW9uIjogIlRyYWNrIGZhbWlseSBpY2UgY3JlYW0gdHJlYXRzIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjZWMzMzg5IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lnZG1sbGQwSnZlRDBpTUNBd0lERXlPQ0F4TWpnaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BHTnBjbU5zWlNCamVEMGlOalFpSUdONVBTSTJOQ0lnY2owaU16SWlJR1pwYkd3OUlpTmxZek16T0RraVBqd3ZZMmx5WTJ4bFBqeHdZWFJvSUdROUlrMDNNaUExTWlCRE56SWdOVElnTnpJZ05qRmJOekVnTnpFZ05qa2dOemxET1RBdU5TQTNOeUEyT1NBM05pQTJOeUE0TXlBMk55QTVNaUJNTnpjZ05qSWdTVGMzSURReUlFczNNaUExTWlvaUlHWnBiR3c5SWlObU5rWXhaaUVpTHo0OEwzTjJaejQ9IiwKICAgICAgInNpemVzIjogIjEyOHgxMjgiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0sCiAgImNhdGVnb3JpZXMiOiBbImZhbWlseSIsICJ0cmFja2luZyJdLAogICJsYW5nIjogImVuIgp9">
+    <meta name="theme-color" content="#ec3389">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Ice Cream Tracker">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjQiIGN5PSI2NCIgcj0iMzIiIGZpbGw9IiNlYzMzODkiPjwvY2lyY2xlPjxwYXRoIGQ9Ik03MiA1MiBDNzIgNTIgNzIgNjFbNzEgNzEgNjkgNzlDOTAuNSA3NyA2OSA3NiA2NyA4MyA2NyA5MiBMNzcgNjIgSTc3IDQyIEs3MiA1MioiIGZpbGw9IiNmNkYxZmYiLz48L3N2Zz4=">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (display-mode: standalone) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+        
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ec3389, #a855f7);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-purple-50 to-blue-100 min-h-screen">
+    <div id="app" class="p-4">
+        <div class="max-w-md mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <div class="bg-white rounded-full p-4 shadow-lg pulse-animation">
+                        <svg class="w-12 h-12 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">🍦 Ice Cream Tracker</h1>
+                <p class="text-gray-600">Track our daughter's ice cream treats!</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white rounded-xl p-4 shadow-lg text-center">
+                    <div id="todayCount" class="text-2xl font-bold text-pink-500">0</div>
+                    <div class="text-sm text-gray-600">Today</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-lg text-center">
+                    <div id="weekCount" class="text-2xl font-bold text-purple-500">0</div>
+                    <div class="text-sm text-gray-600">This Week</div>
+                </div>
+            </div>
+
+            <!-- Add Entry Form -->
+            <div class="bg-white rounded-xl p-6 shadow-lg mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Add Ice Cream
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Who gave the ice cream?
+                        </label>
+                        <select id="familyMember" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500">
+                            <option value="">Select family member</option>
+                            <option value="Mom">Mom</option>
+                            <option value="Dad">Dad</option>
+                            <option value="Grandma">Grandma</option>
+                            <option value="Grandpa">Grandpa</option>
+                            <option value="Uncle Mike">Uncle Mike</option>
+                            <option value="Aunt Sarah">Aunt Sarah</option>
+                        </select>
+                    </div>
+                    
+                    <button id="addButton" onclick="addIceCream()" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-pink-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        🍦 Ice Cream Given!
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Entries -->
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    Recent Ice Creams
+                </h2>
+                
+                <div id="entriesList" class="space-y-3 max-h-64 overflow-y-auto">
+                    <div class="text-center py-8 text-gray-500">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        <p>No ice creams tracked yet!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fun Message -->
+            <div id="funMessage" class="mt-6 bg-yellow-100 border border-yellow-300 rounded-xl p-4 text-center" style="display: none;">
+                <div class="text-2xl mb-2">🎉</div>
+                <div class="text-yellow-800 font-medium">
+                    Wow! That's a lot of ice cream for today!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-bold">Install Ice Cream Tracker</div>
+                <div class="text-sm opacity-90">Add to home screen for easy access!</div>
+            </div>
+            <div>
+                <button onclick="installApp()" class="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold mr-2">Install</button>
+                <button onclick="dismissInstall()" class="opacity-75">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App state
+        let entries = JSON.parse(localStorage.getItem('iceCreamEntries') || '[]');
+        let deferredPrompt;
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4gewogIGV2ZW50LndhaXRVbnRpbChzZWxmLnNraXBXYWl0aW5nKCkpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBldmVudCA9PiB7CiAgZXZlbnQud2FpdFVudGlsKHNlbGYuY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIC8vIE5vIGNhY2hpbmcgZm9yIHNpbXBsaWNpdHkKfSk7')
+                .catch(err => console.log('SW registration failed'));
+        }
+
+        // PWA Install
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                    document.getElementById('installPrompt').style.display = 'none';
+                });
+            }
+        }
+
+        function dismissInstall() {
+            document.getElementById('installPrompt').style.display = 'none';
+        }
+
+        // App functions
+        function addIceCream() {
+            const familyMember = document.getElementById('familyMember').value;
+            if (!familyMember) return;
+
+            const entry = {
+                id: Date.now(),
+                member: familyMember,
+                timestamp: new Date(),
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            entries.unshift(entry);
+            localStorage.setItem('iceCreamEntries', JSON.stringify(entries));
+            
+            document.getElementById('familyMember').value = '';
+            updateDisplay();
+
+            // Add celebration animation
+            const button = document.getElementById('addButton');
+            button.innerHTML = '🎉 Added!';
+            button.classList.add('pulse-animation');
+            setTimeout(() => {
+                button.innerHTML = '🍦 Ice Cream Given!';
+                button.classList.remove('pulse-animation');
+            }, 1500);
+        }
+
+        function getTodaysCount() {
+            const today = new Date().toLocaleDateString();
+            return entries.filter(entry => entry.date === today).length;
+        }
+
+        function getThisWeeksCount() {
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            return entries.filter(entry => new Date(entry.timestamp) >= oneWeekAgo).length;
+        }
+
+        function updateDisplay() {
+            const todayCount = getTodaysCount();
+            const weekCount = getThisWeeksCount();
+            
+            document.getElementById('todayCount').textContent = todayCount;
+            document.getElementById('weekCount').textContent = weekCount;
+
+            // Show fun message if too many today
+            const funMessage = document.getElementById('funMessage');
+            if (todayCount >= 2) {
+                funMessage.style.display = 'block';
+            } else {
+                funMessage.style.display = 'none';
+            }
+
+            // Update entries list
+            const entriesList = document.getElementById('entriesList');
+            if (entries.length === 0) {
+                entriesList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        <p>No ice creams tracked yet!</p>
+                    </div>
+                `;
+            } else {
+                entriesList.innerHTML = entries.map(entry => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="bg-pink-100 rounded-full p-2 mr-3">
+                                <svg class="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-medium text-gray-800">${entry.member}</div>
+                                <div class="text-sm text-gray-600">${entry.date}</div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500">${entry.time}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Initialize app
+        updateDisplay();
+
+        // Enable button when family member is selected
+        document.getElementById('familyMember').addEventListener('change', function() {
+            const addButton = document.getElementById('addButton');
+            if (this.value) {
+                addButton.disabled = false;
+                addButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                addButton.disabled = true;
+                addButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        // Initialize button state
+        document.getElementById('addButton').disabled = true;
+        document.getElementById('addButton').classList.add('opacity-50', 'cursor-not-allowed');
+    </script>
+</body>
+</html>
